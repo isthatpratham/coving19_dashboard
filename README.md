@@ -49,7 +49,7 @@ To launch the full dashboard and API server, simply execute:
 python run_project.py
 ```
 
-Co-authored by: Krishanu Mondal <mkrishanu332@gmail.com>
+Co-authored-by: Krishanu Mondal <mkrishanu332@gmail.com>
 
 ## Accessing the Dashboard
 Once the Flask server is running, the dashboard is available locally in your web browser. 
