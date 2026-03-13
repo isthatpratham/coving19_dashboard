@@ -27,6 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initTheme();
     initDateFilter();
     initComparisonTool();
+    initExportTools();
     loadDashboardData();
 });
 
@@ -651,5 +652,59 @@ async function updateDashboard(country = 'All') {
     } catch (e) {
         console.error("Dashboard update error:", e);
         hideLoaders();
+    }
+}
+
+// --- REPORT EXPORT ---
+
+function initExportTools() {
+    document.getElementById('exportCSV').addEventListener('click', exportToCSV);
+}
+
+function showGlobalLoader() {
+    document.getElementById('globalLoader').classList.remove('hidden');
+}
+
+function hideGlobalLoader() {
+    document.getElementById('globalLoader').classList.add('hidden');
+}
+
+function exportToCSV() {
+    showGlobalLoader();
+
+    try {
+        const trendData = dashboardData.casesVsDeathsTrend;
+        if (!trendData || !trendData.dates) {
+            throw new Error("No trend data available for CSV export.");
+        }
+
+        const recoveryData = dashboardData.recoveryTrend;
+
+        let csvContent = "";
+        csvContent += "Country,Date,Confirmed Cases,Deaths,Recovered\n";
+
+        trendData.dates.forEach((date, index) => {
+            const country = currentCountry === 'All' ? 'Global' : currentCountry;
+            const cases = trendData.cases[index] || 0;
+            const deaths = trendData.deaths[index] || 0;
+            const recovered = (recoveryData && recoveryData.recovered[index]) ? recoveryData.recovered[index] : 0;
+
+            csvContent += `${country},${date},${cases},${deaths},${recovered}\n`;
+        });
+
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.setAttribute("href", url);
+        link.setAttribute("download", `COVID19_Data_${currentCountry}_${new Date().toISOString().split('T')[0]}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+    } catch (e) {
+        console.error("CSV Export failed:", e);
+        alert("Failed to export CSV. Please try again.");
+    } finally {
+        setTimeout(hideGlobalLoader, 500);
     }
 }

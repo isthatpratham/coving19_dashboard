@@ -118,8 +118,8 @@
                         <p class="text-muted">Real-time global COVID-19 data tracking and predictive analysis</p>
                     </div>
                     <div class="d-flex gap-2">
-                        <button class="btn btn-outline-primary btn-sm rounded-pill px-3">
-                            <i class="fas fa-download me-1"></i> Export PDF
+                        <button id="exportCSV" class="btn btn-outline-success btn-sm rounded-pill px-3">
+                            <i class="fas fa-file-csv me-1"></i> Export CSV
                         </button>
                     </div>
                 </div>
@@ -454,7 +454,35 @@
             opacity: 0;
             pointer-events: none;
         }
+
+        /* Global Export Loader */
+        #globalLoader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(var(--bg-main-rgb), 0.9);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.3s;
+        }
+
+        #globalLoader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
     </style>
+
+    <!-- GLOBAL LOADER -->
+    <div id="globalLoader" class="hidden">
+        <div class="spinner-grow text-primary mb-3" role="status" style="width: 3rem; height: 3rem;"></div>
+        <h5 class="fw-bold">Generating Report...</h5>
+        <p class="text-muted">This may take a few moments depending on the data size.</p>
+    </div>
 </body>
 
 </html>
