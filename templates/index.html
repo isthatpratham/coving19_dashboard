@@ -124,6 +124,29 @@
                     </div>
                 </div>
 
+                <!-- KEY INSIGHTS PANEL -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="chart-card insight-panel-card">
+                            <div class="chart-header pb-2 mb-3 border-bottom">
+                                <h5 class="chart-title mb-0">
+                                    Key Performance Insights
+                                </h5>
+                                <button class="btn btn-link text-muted p-0" id="refreshInsights"
+                                    title="Refresh Insights">
+                                    <i class="fas fa-sync-alt"></i>
+                                </button>
+                            </div>
+                            <div id="insightList" class="insight-list">
+                                <div class="d-flex justify-content-center py-4">
+                                    <div class="spinner-border text-warning spinner-border-sm" role="status"></div>
+                                    <span class="ms-2 text-muted small">Analyzing dataset...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- KPI CARDS -->
                 <div class="row g-4 kpi-row">
                     <div class="col-xl col-md-4 col-sm-6">

@@ -614,3 +614,63 @@ body.dark-mode .chart-header .form-select {
     transition: none;
     /* Chart.js handles its own animation */
 }
+
+/* --- Key Insights Panel Styles --- */
+.insight-panel-card {
+    border-left: 4px solid var(--warning);
+    background: linear-gradient(to right, rgba(245, 158, 11, 0.05), transparent);
+}
+
+.insight-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.insight-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    opacity: 0;
+    animation: fadeInSlideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.insight-icon {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(245, 158, 11, 0.1);
+    color: var(--warning);
+    border-radius: 6px;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.insight-text {
+    font-size: 0.925rem;
+    line-height: 1.5;
+    color: var(--text-main);
+}
+
+@keyframes fadeInSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+body.dark-mode .insight-panel-card {
+    background: linear-gradient(to right, rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.02));
+}
+
+body.dark-mode .insight-text {
+    color: #e2e8f0;
+}

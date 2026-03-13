@@ -30,6 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initExportTools();
     loadDashboardData();
     initBarRace();
+    initInsights();
 });
 
 // --- LAYOUT & THEME LOGIC ---
@@ -907,4 +908,54 @@ function getCountryColor(country) {
         countryColorMap[country] = vibrantColors[index];
     }
     return countryColorMap[country];
+}
+
+// --- KEY INSIGHTS LOGIC ---
+
+async function initInsights() {
+    const refreshBtn = document.getElementById('refreshInsights');
+    if (refreshBtn) {
+        refreshBtn.addEventListener('click', () => {
+            const list = document.getElementById('insightList');
+            list.innerHTML = `
+                <div class="d-flex justify-content-center py-4">
+                    <div class="spinner-border text-warning spinner-border-sm" role="status"></div>
+                    <span class="ms-2 text-muted small">Analyzing dataset...</span>
+                </div>`;
+            fetchInsights();
+        });
+    }
+    fetchInsights();
+}
+
+async function fetchInsights() {
+    try {
+        const response = await fetch('/api/key-insights');
+        const insights = await response.json();
+        renderInsights(insights);
+    } catch (error) {
+        console.error("Failed to fetch insights:", error);
+        document.getElementById('insightList').innerHTML = '<p class="text-danger small py-3">Failed to load insights. Please try again later.</p>';
+    }
+}
+
+function renderInsights(insights) {
+    const list = document.getElementById('insightList');
+    list.innerHTML = '';
+
+    if (!insights || insights.length === 0) {
+        list.innerHTML = '<p class="text-muted small py-3">No insights available for the current dataset.</p>';
+        return;
+    }
+
+    insights.forEach((insight, index) => {
+        const item = document.createElement('div');
+        item.className = 'insight-item';
+        item.style.animationDelay = `${index * 0.15}s`;
+
+        item.innerHTML = `
+            <div class="insight-text">• ${insight}</div>
+        `;
+        list.appendChild(item);
+    });
 }

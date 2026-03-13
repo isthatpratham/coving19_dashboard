@@ -176,6 +176,54 @@ def cases_ranking_race():
     result = top_10_per_month.rename(columns={'confirmed_cases': 'cases'}).to_dict(orient='records')
     return jsonify(result)
 
+@app.route('/api/key-insights', methods=['GET'])
+def key_insights():
+    df = get_dataframe()
+    if df is None or df.empty:
+        return jsonify([])
+    
+    df = df.copy()
+    df['date'] = pd.to_datetime(df['date'])
+    
+    insights = []
+    
+    # 1. Peak global infection date
+    daily_global = df.groupby('date')['confirmed_cases'].sum().diff().fillna(0)
+    peak_date = daily_global.idxmax()
+    insights.append(f"Global daily cases peaked on {peak_date.strftime('%B %d, %Y')}.")
+    
+    # 2. Country with highest total confirmed cases
+    country_totals = df.groupby('country')['confirmed_cases'].max().sort_values(ascending=False)
+    top_country = country_totals.index[0]
+    top_cases = country_totals.values[0]
+    insights.append(f"{top_country} recorded the highest total cases ({int(top_cases):,}).")
+    
+    # 3. Country with highest mortality rate (minimum 10,000 cases to avoid outliers)
+    mortality = df.groupby('country').agg({'deaths': 'max', 'confirmed_cases': 'max'})
+    mortality = mortality[mortality['confirmed_cases'] >= 10000]
+    mortality['rate'] = (mortality['deaths'] / mortality['confirmed_cases']) * 100
+    top_mortality_country = mortality['rate'].idxmax()
+    top_mortality_rate = mortality['rate'].max()
+    insights.append(f"{top_mortality_country} has the highest mortality rate among heavily affected nations ({top_mortality_rate:.2f}%).")
+    
+    # 4. Month with fastest growth in cases
+    df['month'] = df['date'].dt.strftime('%Y-%m')
+    monthly_global = df.groupby('month')['confirmed_cases'].sum()
+    monthly_growth = monthly_global.diff().fillna(0)
+    fastest_month_str = monthly_growth.idxmax()
+    from datetime import datetime
+    fastest_month = datetime.strptime(fastest_month_str, '%Y-%m').strftime('%B %Y')
+    insights.append(f"Global cases saw the fastest growth during {fastest_month}.")
+    
+    # 5. Global recovery rate
+    total_confirmed = df.groupby('country')['confirmed_cases'].max().sum()
+    total_recovered = df.groupby('country')['recovered'].max().sum()
+    if total_confirmed > 0:
+        recovery_rate = (total_recovered / total_confirmed) * 100
+        insights.append(f"The global recovery rate is currently estimated at {recovery_rate:.1f}%.")
+    
+    return jsonify(insights)
+
 @app.route('/')
 def index():
     return render_template('index.html')
