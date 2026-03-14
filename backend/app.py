@@ -271,6 +271,57 @@ def custom_analysis():
         
     return jsonify(result.to_dict(orient='records'))
 
+@app.route('/global-overview')
+def global_overview():
+    return render_template('global_overview.html')
+
+@app.route('/api/global-cases-trend', methods=['GET'])
+def global_cases_trend():
+    df = get_dataframe()
+    if df is None: return jsonify({"dates": [], "cases": []})
+    trend = df.groupby('date')['confirmed_cases'].sum().reset_index().sort_values('date')
+    return jsonify({"dates": trend['date'].astype(str).tolist(), "cases": trend['confirmed_cases'].tolist()})
+
+@app.route('/api/global-deaths-trend', methods=['GET'])
+def global_deaths_trend():
+    df = get_dataframe()
+    if df is None: return jsonify({"dates": [], "deaths": []})
+    trend = df.groupby('date')['deaths'].sum().reset_index().sort_values('date')
+    return jsonify({"dates": trend['date'].astype(str).tolist(), "deaths": trend['deaths'].tolist()})
+
+@app.route('/api/global-recovery-trend', methods=['GET'])
+def global_recovery_trend():
+    df = get_dataframe()
+    if df is None: return jsonify({"dates": [], "recovered": []})
+    trend = df.groupby('date')['recovered'].sum().reset_index().sort_values('date')
+    return jsonify({"dates": trend['date'].astype(str).tolist(), "recovered": trend['recovered'].tolist()})
+
+@app.route('/api/global-stats', methods=['GET'])
+def global_stats():
+    df = get_dataframe()
+    if df is None: return jsonify({})
+    # Get total cases by taking max per country and summing
+    country_stats = df.groupby('country').agg({
+        'confirmed_cases': 'max',
+        'deaths': 'max',
+        'recovered': 'max'
+    }).sum()
+    
+    cases = int(country_stats['confirmed_cases'])
+    deaths = int(country_stats['deaths'])
+    recovered = int(country_stats['recovered'])
+    
+    mortality = (deaths / cases * 100) if cases > 0 else 0
+    recovery = (recovered / cases * 100) if cases > 0 else 0
+    
+    return jsonify({
+        "total_cases": cases,
+        "total_deaths": deaths,
+        "total_recovered": recovered,
+        "mortality_rate": round(mortality, 2),
+        "recovery_rate": round(recovery, 2)
+    })
+
 @app.route('/')
 def index():
     return render_template('index.html')
