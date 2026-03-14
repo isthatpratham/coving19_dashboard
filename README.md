@@ -1,56 +1,262 @@
-# COVID-19 Data Analytics and Visualization Dashboard
+# COVID-19 Data Analytics Platform
 
-## Project Description
-A full-stack data analytics and visualization dashboard that tracks and analyzes global COVID-19 metrics from the Johns Hopkins time-series dataset. 
+A full-stack **interactive analytics dashboard** for exploring global COVID-19 trends using data visualization, statistical analysis, and dynamic dashboards.
 
-This project provides an intuitive web interface built with a Flask API backend and an interactive Bootstrap frontend with dynamic Chart.js visualizations. Key features include tracking the top affected countries, daily/monthly global trends, mortality rate rankings, and continent-level analysis.
+This platform transforms raw pandemic data into **interactive insights**, enabling users to analyze global trends, compare countries, detect anomalies, and generate reports.
 
-## Technology Stack
-- **Backend**: Python Flask
-- **Database**: MySQL (XAMPP)
-- **Data Processing**: Pandas, NumPy
-- **Visualizations (Python)**: Matplotlib, Seaborn
-- **Visualizations (Web)**: Chart.js
-- **Frontend UI**: Bootstrap, HTML, CSS, JavaScript
+---
 
-## Installation Steps
-Follow these instructions to set up and run the project locally.
+# Dashboard Preview
 
-**1. Install XAMPP and start MySQL**
-Ensure Apache and MySQL are running from the XAMPP Control Panel.
+## Main Dashboard
 
-**2. Create database `covid19`**
-Open phpMyAdmin (usually `http://localhost/phpmyadmin`) and create a database named `covid19`.
+![Dashboard](screenshots/dashboard.png)
 
-**3. Run database schema SQL**
-Import and execute the `schema.sql` file provided in the root directory into the `covid19` database to set up the necessary tables and populate the initial `country_info` geographic data.
+## Global Overview
 
-**4. Install Python dependencies**
-Open a terminal in the project root folder and run:
-```bash
+![Global Overview](screenshots/global_overview.png)
+
+## Country Analytics
+
+![Country Analytics](screenshots/country_analytics.png)
+
+## Trends Analysis
+
+![Trends](screenshots/trends.png)
+
+## Data Explorer
+
+![Data Explorer](screenshots/data_explorer.png)
+
+---
+
+# Key Features
+
+## Interactive Analytics
+
+• KPI performance indicators
+• Time-series visualizations
+• Scatter correlation analysis
+• Monthly trend analysis
+• Recovery performance charts
+
+## Advanced Visualizations
+
+• Heatmap analytics
+• Anomaly detection for spikes
+• Animated race chart (country ranking over time)
+• Growth rate volatility tracking
+
+## Exploration Tools
+
+• Country comparison tool
+• Interactive date range filter
+• Data explorer for custom analytics queries
+
+## Reporting
+
+• Export dashboard reports to **PDF**
+• Download dataset as **CSV**
+
+## Smart Insights
+
+• Automated insight panel highlighting key patterns
+• Detection of unusual spikes in pandemic trends
+
+---
+
+# Platform Architecture
+
+```
+                   ┌────────────────────┐
+                   │    Web Browser     │
+                   │  (Dashboard UI)   │
+                   └─────────┬──────────┘
+                             │
+                             │ HTTP Requests
+                             ▼
+                   ┌────────────────────┐
+                   │     Flask App      │
+                   │  API + Routing     │
+                   └─────────┬──────────┘
+                             │
+                  Data Processing Layer
+                             ▼
+                   ┌────────────────────┐
+                   │      Pandas        │
+                   │ Data Aggregation   │
+                   │ Statistical Logic  │
+                   └─────────┬──────────┘
+                             │
+                             ▼
+                   ┌────────────────────┐
+                   │       MySQL        │
+                   │  COVID Dataset DB  │
+                   └────────────────────┘
+```
+
+---
+
+# Technology Stack
+
+### Backend
+
+• Python
+• Flask
+• Pandas
+• MySQL
+
+### Frontend
+
+• HTML5
+• CSS3
+• JavaScript
+
+### Visualization
+
+• Chart.js
+• Heatmap visualization
+• Scatter analytics
+
+### Data Source
+
+Johns Hopkins CSSE COVID-19 Dataset
+
+---
+
+# Project Structure
+
+```
+covid-dashboard/
+│
+├── backend/
+│   ├── app.py
+│   ├── config.py
+│
+├── dataset/
+│   ├── confirmed.csv
+│   ├── deaths.csv
+│   ├── recovered.csv
+│
+├── scripts/
+│   ├── prepare_dataset.py
+│   ├── load_data_mysql.py
+│
+├── templates/
+│   ├── dashboard.html
+│   ├── global_overview.html
+│   ├── country_analytics.html
+│   ├── trends.html
+│   ├── reports.html
+│   ├── settings.html
+│
+├── static/
+│   ├── css/
+│   ├── js/
+│
+├── screenshots/
+│   ├── dashboard.png
+│   ├── global_overview.png
+│   ├── trends.png
+│
+└── README.md
+```
+
+---
+
+# Installation
+
+## 1 Clone the repository
+
+```
+git clone https://github.com/yourusername/covid-analytics-dashboard.git
+cd covid-analytics-dashboard
+```
+
+---
+
+## 2 Install dependencies
+
+```
 pip install -r requirements.txt
 ```
 
-**5. Prepare dataset**
-Execute the data cleaning script to format the raw CSV files for database insertion.
-```bash
+---
+
+## 3 Start MySQL (XAMPP)
+
+Create database:
+
+```
+covid19
+```
+
+---
+
+## 4 Prepare dataset
+
+```
 python scripts/prepare_dataset.py
 ```
 
-**6. Load dataset into MySQL**
-Execute the data loading script exactly once to batch-insert the cleaned data securely to your local MySQL database. Note: It may take some time depending on your hardware.
-```bash
+---
+
+## 5 Load data into database
+
+```
 python scripts/load_data_mysql.py
 ```
 
-**7. Run the project**
-To launch the full dashboard and API server, simply execute:
-```bash
+---
+
+## 6 Run the application
+
+```
 python run_project.py
 ```
 
-Co-authored-by: krishanu717 <mkrishanu332@gmail.com>
+Open browser:
 
-## Accessing the Dashboard
-Once the Flask server is running, the dashboard is available locally in your web browser. 
-**URL**: [http://127.0.0.1:5000](http://127.0.0.1:5000)
+```
+http://127.0.0.1:5000
+```
+
+---
+
+# API Endpoints
+
+| Endpoint                 | Description                |
+| ------------------------ | -------------------------- |
+| `/api/top-countries`     | Top affected countries     |
+| `/api/daily-trend`       | Daily confirmed cases      |
+| `/api/monthly-trend`     | Monthly accumulation       |
+| `/api/mortality-ranking` | Mortality comparison       |
+| `/api/country-data`      | Country specific analytics |
+| `/api/key-insights`      | Automated insights         |
+| `/api/case-anomalies`    | Outlier detection          |
+
+---
+
+# Example Insights Generated
+
+• Global COVID cases peaked in **April 2021**
+• United States recorded the **highest total infections**
+• India experienced the **fastest case growth spike** in 2021
+
+---
+
+# Future Improvements
+
+• Machine learning forecasting models
+• Real-time streaming data integration
+• Geographic map analytics
+• User authentication and multi-tenant dashboards
+
+---
+
+# Author
+
+**Pratham Debnath**
+
+MCA Student — SRM University
+
