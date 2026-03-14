@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports & Exports | COVID-19 Analytics Pro</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome 6 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <div class="app-wrapper">
+        <!-- SIDEBAR -->
+        <aside id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-wrapper">
+                    <div class="logo-icon">
+                        <i class="fas fa-virus-slash"></i>
+                    </div>
+                    <span class="logo-text">COVID-19 Pro</span>
+                </div>
+                <button id="sidebarToggle" class="btn btn-link text-white d-md-none">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <ul class="sidebar-menu">
+                <li class="menu-item">
+                    <a href="/" class="menu-link">
+                        <i class="fas fa-th-large"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="/global-overview" class="menu-link">
+                        <i class="fas fa-globe"></i>
+                        <span>Global Overview</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="/country-analytics" class="menu-link">
+                        <i class="fas fa-flag"></i>
+                        <span>Country Analytics</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="/trends" class="menu-link">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Trends Analysis</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="/reports" class="menu-link active">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Reports</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="/settings" class="menu-link" data-view="settings">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- MAIN AREA -->
+        <main class="main-content">
+            <!-- TOP NAVBAR -->
+            <nav class="top-navbar">
+                <div class="d-flex align-items-center gap-3">
+                    <button id="collapseSidebar" class="nav-btn">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="search-wrapper">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="globalSearch" placeholder="Search reports...">
+                    </div>
+                </div>
+
+                <div class="nav-actions">
+                    <button id="themeToggle" class="nav-btn" title="Toggle Dark/Light Mode">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <div class="nav-btn">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge"></span>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- REPORTS CONTENT -->
+            <div class="dashboard-container">
+                <div class="page-header">
+                    <h1 class="page-title">Reports & Exports</h1>
+                    <p class="text-muted">Generate detailed analytics reports and export raw data for external use</p>
+                </div>
+
+                <div class="row g-4">
+                    <!-- Export Actions -->
+                    <div class="col-xl-4 col-md-6">
+                        <div class="stats-card p-4 h-100 flex-column align-items-start d-flex">
+                            <div class="stats-icon-wrapper mb-3"
+                                style="background: rgba(79, 70, 229, 0.1); color: var(--primary-color);">
+                                <i class="fas fa-file-csv fa-2x"></i>
+                            </div>
+                            <h4 class="fw-bold mb-2">Raw Data Export</h4>
+                            <p class="text-muted small mb-4">Download the entire COVID-19 dataset in CSV format
+                                including daily cases, deaths, and recoveries for all countries.</p>
+                            <a href="/api/full-export" class="btn btn-primary mt-auto w-100">
+                                <i class="fas fa-download me-2"></i> Download CSV
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-4 col-md-6">
+                        <div class="stats-card p-4 h-100 flex-column align-items-start d-flex">
+                            <div class="stats-icon-wrapper mb-3"
+                                style="background: rgba(239, 68, 68, 0.1); color: var(--danger-color);">
+                                <i class="fas fa-file-pdf fa-2x"></i>
+                            </div>
+                            <h4 class="fw-bold mb-2">Summary PDF Report</h4>
+                            <p class="text-muted small mb-4">Generate a print-ready PDF containing the latest global
+                                statistics, trend summaries, and key insights.</p>
+                            <button id="generatePDF" class="btn btn-danger mt-auto w-100">
+                                <i class="fas fa-file-export me-2"></i> Generate PDF
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-4 col-md-6">
+                        <div class="stats-card p-4 h-100 flex-column align-items-start d-flex">
+                            <div class="stats-icon-wrapper mb-3"
+                                style="background: rgba(16, 185, 129, 0.1); color: var(--success-color);">
+                                <i class="fas fa-share-alt fa-2x"></i>
+                            </div>
+                            <h4 class="fw-bold mb-2">Share Insights</h4>
+                            <p class="text-muted small mb-4">Copy a formatted markdown or text summary of the current
+                                analytics to share via email or professional comms.</p>
+                            <button id="copySummary" class="btn btn-success mt-auto w-100">
+                                <i class="fas fa-copy me-2"></i> Copy Summary
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Analytical Summary View -->
+                    <div class="col-xl-8">
+                        <div class="chart-card p-0 overflow-hidden">
+                            <div
+                                class="chart-header border-bottom p-3 bg-light d-flex justify-content-between align-items-center">
+                                <h5 class="chart-title mb-0">Automated Analytical Summary</h5>
+                                <div class="badge bg-info" id="reportTimestamp">Loading...</div>
+                            </div>
+                            <div class="p-4" id="reportContent">
+                                <div class="d-flex justify-content-center py-5">
+                                    <div class="spinner-border text-primary" role="status"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Export History -->
+                    <div class="col-xl-4">
+                        <div class="chart-card h-100">
+                            <div class="chart-header">
+                                <h5 class="chart-title">Export History</h5>
+                            </div>
+                            <div class="p-3">
+                                <div class="table-responsive">
+                                    <table class="table table-hover align-middle border-0">
+                                        <tbody id="exportHistoryBody">
+                                            <!-- Mocked history -->
+                                            <tr>
+                                                <td class="border-0">
+                                                    <div class="d-flex align-items-center">
+                                                        <div
+                                                            class="bg-primary bg-opacity-10 p-2 rounded text-primary me-3">
+                                                            <i class="fas fa-file-csv"></i>
+                                                        </div>
+                                                        <div>
+                                                            <div class="fw-medium small">full_dataset.csv</div>
+                                                            <div class="text-muted" style="font-size: 0.7rem;">2 mins
+                                                                ago • 4.2 MB</div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="border-0">
+                                                    <div class="d-flex align-items-center">
+                                                        <div
+                                                            class="bg-danger bg-opacity-10 p-2 rounded text-danger me-3">
+                                                            <i class="fas fa-file-pdf"></i>
+                                                        </div>
+                                                        <div>
+                                                            <div class="fw-medium small">monthly_overview.pdf</div>
+                                                            <div class="text-muted" style="font-size: 0.7rem;">1 hour
+                                                                ago • 1.1 MB</div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <footer class="footer mt-auto py-3 text-center border-top bg-card text-muted small">
+                &copy; 2026 COVID-19 Surveillance Dashboard. Professional Analytics Edition.
+            </footer>
+        </main>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/reports.js') }}"></script>
+</body>
+
+</html>

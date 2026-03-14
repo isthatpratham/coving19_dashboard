@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pandemic Trends | COVID-19 Analytics Pro</title>
+    <title>Dashboard Settings | COVID-19 Analytics Pro</title>
 
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -54,19 +54,19 @@
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="/trends" class="menu-link active">
+                    <a href="/trends" class="menu-link">
                         <i class="fas fa-chart-line"></i>
                         <span>Trends Analysis</span>
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="/reports" class="menu-link" data-view="reports">
+                    <a href="/reports" class="menu-link">
                         <i class="fas fa-file-alt"></i>
                         <span>Reports</span>
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="/settings" class="menu-link" data-view="settings">
+                    <a href="/settings" class="menu-link active">
                         <i class="fas fa-cog"></i>
                         <span>Settings</span>
                     </a>
@@ -84,7 +84,7 @@
                     </button>
                     <div class="search-wrapper">
                         <i class="fas fa-search"></i>
-                        <input type="text" id="globalSearch" placeholder="Search trends...">
+                        <input type="text" id="globalSearch" placeholder="Search settings...">
                     </div>
                 </div>
 
@@ -92,89 +92,99 @@
                     <button id="themeToggle" class="nav-btn" title="Toggle Dark/Light Mode">
                         <i class="fas fa-moon"></i>
                     </button>
-                    <div class="nav-btn">
-                        <i class="fas fa-bell"></i>
-                        <span class="notification-badge"></span>
-                    </div>
                 </div>
             </nav>
 
-            <!-- TRENDS CONTENT -->
+            <!-- SETTINGS CONTENT -->
             <div class="dashboard-container">
                 <div class="page-header">
-                    <h1 class="page-title">Pandemic Trends</h1>
-                    <p class="text-muted">Deep-dive into time-series patterns, growth rates, and comparisons</p>
+                    <h1 class="page-title">Dashboard Settings</h1>
+                    <p class="text-muted">Personalize your COVID-19 Analytics Pro experience</p>
                 </div>
 
-                <!-- CHARTS GRID -->
                 <div class="row g-4">
-                    <!-- Monthly Accumulation Trend -->
+                    <!-- Appearance Settings -->
                     <div class="col-xl-6">
                         <div class="chart-card">
                             <div class="chart-header">
-                                <h5 class="chart-title">Monthly Accumulation Trend</h5>
+                                <h5 class="chart-title">Appearance</h5>
                             </div>
-                            <div class="chart-canvas-wrapper">
-                                <canvas id="monthlyTrendChart"></canvas>
-                                <div class="loader-overlay" id="loader-monthly">
-                                    <div class="spinner-border text-primary" role="status"></div>
+                            <div class="p-4">
+                                <div class="d-flex justify-content-between align-items-center mb-4">
+                                    <div>
+                                        <h6 class="mb-1">Dark Mode</h6>
+                                        <p class="text-muted small mb-0">Switch between light and dark backgrounds</p>
+                                    </div>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="darkModeSwitch">
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Daily Growth Rate Volatility -->
+                    <!-- Dashboard Behavior -->
                     <div class="col-xl-6">
                         <div class="chart-card">
                             <div class="chart-header">
-                                <h5 class="chart-title">Daily Growth Rate Volatility (%)</h5>
+                                <h5 class="chart-title">Dashboard Behavior</h5>
                             </div>
-                            <div class="chart-canvas-wrapper">
-                                <canvas id="growthRateChart"></canvas>
-                                <div class="loader-overlay" id="loader-growth">
-                                    <div class="spinner-border text-warning" role="status"></div>
+                            <div class="p-4">
+                                <div class="d-flex justify-content-between align-items-center mb-4">
+                                    <div>
+                                        <h6 class="mb-1">Auto Refresh (Every 5 mins)</h6>
+                                        <p class="text-muted small mb-0">Automatically reload data during session</p>
+                                    </div>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="autoRefreshSwitch">
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="mb-1">Chart Animations</h6>
+                                        <p class="text-muted small mb-0">Enable smooth transitions for all charts</p>
+                                    </div>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="chartAnimationSwitch"
+                                            checked>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- 7-Day Moving Average -->
-                    <div class="col-xl-12">
+                    <!-- Default Filters -->
+                    <div class="col-xl-6">
                         <div class="chart-card">
                             <div class="chart-header">
-                                <h5 class="chart-title">Global 7-Day Moving Average (New Cases vs New Deaths)</h5>
+                                <h5 class="chart-title">Default Filters</h5>
                             </div>
-                            <div class="chart-canvas-wrapper" style="height: 400px;">
-                                <canvas id="movingAverageChart"></canvas>
-                                <div class="loader-overlay" id="loader-ma">
-                                    <div class="spinner-border text-info" role="status"></div>
-                                </div>
+                            <div class="p-4">
+                                <label class="form-label small text-muted">Initial Date Range</label>
+                                <select class="form-select" id="defaultDateRange">
+                                    <option value="last_7_days">Last 7 Days</option>
+                                    <option value="last_30_days">Last 30 Days</option>
+                                    <option value="all_time" selected>All Time</option>
+                                </select>
+                                <p class="text-muted small mt-2 mb-0">Determines how much data is loaded when you first
+                                    open the dashboard.</p>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Bar Race Chart -->
-                    <div class="col-xl-12">
-                        <div class="chart-card">
-                            <div class="chart-header d-flex justify-content-between align-items-center">
-                                <h5 class="chart-title">Top 10 Countries Race Chart</h5>
-                                <div id="raceTimer" class="badge bg-primary fs-6">Jan 2020</div>
+                    <!-- Information -->
+                    <div class="col-xl-6">
+                        <div class="chart-card h-100">
+                            <div class="chart-header">
+                                <h5 class="chart-title">About This Dashboard</h5>
                             </div>
-                            <div class="chart-canvas-wrapper" style="height: 500px;">
-                                <canvas id="barRaceChart"></canvas>
-                                <div class="loader-overlay" id="loader-race">
-                                    <div class="spinner-border text-danger" role="status"></div>
-                                </div>
-                            </div>
-                            <div class="chart-footer px-3 pb-3">
-                                <div class="d-flex gap-2">
-                                    <button id="racePlay" class="btn btn-primary btn-sm"><i
-                                            class="fas fa-play me-1"></i> Play</button>
-                                    <button id="racePause" class="btn btn-secondary btn-sm" disabled><i
-                                            class="fas fa-pause me-1"></i> Pause</button>
-                                    <button id="raceRestart" class="btn btn-outline-secondary btn-sm"><i
-                                            class="fas fa-redo me-1"></i> Restart</button>
-                                </div>
+                            <div class="p-4">
+                                <p class="small text-muted">Version: 2.1.0 (Professional Analytics Edition)</p>
+                                <p class="small text-muted">Data Source: JHU COVID-19 Public Repository (Aggregated)</p>
+                                <hr>
+                                <button id="resetSettings" class="btn btn-outline-danger btn-sm">
+                                    <i class="fas fa-undo me-2"></i> Reset to Factory Defaults
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -189,8 +199,7 @@
 
     <!-- SCRIPTS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="{{ url_for('static', filename='js/trends.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/settings.js') }}"></script>
 </body>
 
 </html>

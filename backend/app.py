@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, render_template, request, make_response
 import mysql.connector
 import pandas as pd
 from config import get_db_connection
@@ -366,6 +366,63 @@ def country_data():
 @app.route('/trends')
 def trends():
     return render_template('trends.html')
+
+@app.route('/reports')
+def reports():
+    return render_template('reports.html')
+
+@app.route('/settings')
+def settings():
+    return render_template('settings.html')
+
+@app.route('/api/full-export', methods=['GET'])
+def full_export():
+    df = get_dataframe()
+    if df is None: return "Internal Server Error", 500
+    
+    # Return as CSV
+    from io import StringIO
+    output = StringIO()
+    df.to_csv(output, index=False)
+    
+    response = make_response(output.getvalue())
+    response.headers["Content-Disposition"] = "attachment; filename=covid19_full_dataset.csv"
+    response.headers["Content-type"] = "text/csv"
+    return response
+
+@app.route('/api/analytics-summary', methods=['GET'])
+def get_analytics_summary():
+    df = get_dataframe()
+    if df is None: return jsonify({})
+    
+    df['date'] = pd.to_datetime(df['date'])
+    
+    # Global Totals
+    total_confirmed = df.groupby('country')['confirmed_cases'].max().sum()
+    total_deaths = df.groupby('country')['deaths'].max().sum()
+    total_recovered = df.groupby('country')['recovered'].max().sum()
+    
+    # Peak Daily Cases (Global)
+    daily_global = df.groupby('date')['confirmed_cases'].sum().diff().fillna(0)
+    peak_val = daily_global.max()
+    peak_date = daily_global.idxmax()
+    
+    # Top 3 Countries
+    top_3 = df.groupby('country')['confirmed_cases'].max().sort_values(ascending=False).head(3).to_dict()
+    
+    return jsonify({
+        "totals": {
+            "cases": int(total_confirmed),
+            "deaths": int(total_deaths),
+            "recovered": int(total_recovered)
+        },
+        "peak": {
+            "value": int(peak_val),
+            "date": peak_date.strftime('%Y-%m-%d')
+        },
+        "top_countries": top_3,
+        "last_update": df['date'].max().strftime('%Y-%m-%d')
+    })
 
 @app.route('/api/monthly-trend', methods=['GET'])
 def get_monthly_trend():
