@@ -245,15 +245,6 @@ http://127.0.0.1:5000
 
 ---
 
-# Future Improvements
-
-• Machine learning forecasting models
-• Real-time streaming data integration
-• Geographic map analytics
-• User authentication and multi-tenant dashboards
-
----
-
 
 # Author
 
