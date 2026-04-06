@@ -12,7 +12,7 @@ This platform transforms raw pandemic data into **interactive insights**, enabli
 
 ![Dashboard](screenshots/dashboard.png)
 
-## Global Overview
+## Global Overview:
 
 ![Global Overview](screenshots/global_overview.png)
 
