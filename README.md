@@ -1,4 +1,4 @@
-# COVID-19 Data Analytics Platform
+# COVID-19 Data Analytics Platform:
 
 A full-stack **interactive analytics dashboard** for exploring global COVID-19 trends using data visualization, statistical analysis, and dynamic dashboards.
 
